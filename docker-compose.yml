@@ -1,0 +1,22 @@
+services:
+  video-streaming:
+    build: .
+    ports:
+      - "8000:8000"
+    env_file:
+      - path: .env
+        required: false
+    volumes:
+      - ./media:/media:ro
+    tmpfs:
+      - /hls:size=512m,uid=1000   # HLS segments in RAM: no disk wear, faster serving
+    # Linux webcam passthrough (not supported by Docker Desktop on Windows/macOS):
+    # devices:
+    #   - /dev/video0:/dev/video0
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
+    deploy:
+      resources:
+        limits: { cpus: "4", memory: 2g }

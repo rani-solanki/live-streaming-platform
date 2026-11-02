@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Video Streaming</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header><h1>Video Streaming</h1><span id="summary"></span></header>
+
+  <div id="errors" role="alert"></div>
+
+  <form id="start-form">
+    <label>Type
+      <select id="source-type">
+        <option value="file">Video file</option>
+        <option value="webcam">Webcam / USB camera</option>
+        <option value="rtsp">RTSP camera</option>
+      </select>
+    </label>
+    <label id="source-wrap">Source
+      <select id="source-file"></select>
+      <input id="source-text" autocomplete="off" spellcheck="false" hidden>
+    </label>
+    <label>Protocol
+      <select id="protocol">
+        <option value="">Auto</option>
+        <option value="mjpeg">MJPEG (low latency)</option>
+        <option value="hls">HLS (efficient)</option>
+      </select>
+    </label>
+    <label>FPS <input id="fps" type="number" min="1" max="60" placeholder="15"></label>
+    <label>Width <input id="width" type="number" min="64" step="2" placeholder="auto"></label>
+    <label>Height <input id="height" type="number" min="64" step="2" placeholder="auto"></label>
+    <label class="check" id="loop-wrap"><input id="loop" type="checkbox" checked> Loop file</label>
+    <button type="submit" id="start-btn">Start stream</button>
+  </form>
+
+  <section id="voice" class="voice">
+    <h2>Voice</h2>
+    <div class="voice-row">
+      <div class="voice-col">
+        <div class="voice-title">Speak <span id="talk-count" class="muted"></span></div>
+        <div class="voice-controls">
+          <button id="talk-btn" type="button">🎤 Start talking</button>
+          <button id="mute-btn" type="button" class="secondary" hidden>Mute</button>
+        </div>
+        <div class="meter" id="mic-meter" hidden><div id="mic-level"></div></div>
+        <div id="talk-status" class="voice-status"></div>
+      </div>
+      <div class="voice-col">
+        <div class="voice-title">Listen</div>
+        <div class="voice-controls">
+          <button id="listen-btn" type="button">🔊 Listen</button>
+          <label class="volume">Volume <input id="volume" type="range" min="0" max="100" value="100"></label>
+        </div>
+        <div class="meter"><div id="listen-level"></div></div>
+        <div id="listen-status" class="voice-status"></div>
+      </div>
+    </div>
+    <div id="voice-conn" class="voice-status"></div>
+    <div id="voice-error" role="alert"></div>
+  </section>
+
+  <p id="empty">No active streams. Start one above.</p>
+  <main id="grid"></main>
+
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.17/dist/hls.min.js"></script>
+  <script src="app.js"></script>
+  <script src="voice.js"></script>
+</body>
+</html>
